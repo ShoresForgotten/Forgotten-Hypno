@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="xyz.shoresforgotten.hypno_app">
    <application
-        android:label="hypno_app"
+        android:label="Forgotten Hypnosis"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

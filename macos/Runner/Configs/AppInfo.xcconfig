@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = hypno_app
+PRODUCT_NAME = Forgotten Hypnosis;
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = nl.gred.hypnoApp
+PRODUCT_BUNDLE_IDENTIFIER = xyz.shoresforgotten.forgotten_hypno;
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 nl.gred. All rights reserved.

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'shader_provider.dart';
+import 'shader_state.dart';
+import 'shaders.dart';
 
+//class SettingsPage extends StatelessWidget
+/*
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
@@ -170,3 +173,4 @@ class _UniformSliderState extends State<UniformSlider> {
         ]));
   }
 }
+*/

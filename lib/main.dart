@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:ui';
-
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'settings_page.dart';
@@ -9,7 +6,7 @@ import 'shader_state.dart';
 import 'shaders.dart';
 
 void main() async {
-  var state = await ShaderState.createState(ShaderEnum.testShader);
+  var state = await ShaderState.createState(ShaderEnum.spiral);
 
   runApp(HypnoApp(
     state: state,
@@ -22,31 +19,39 @@ class HypnoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Forgotten Hypnosis",
-      home: Scaffold(
-        appBar: null,
-        body: ChangeNotifierProvider<ShaderState>(
-            create: (_) => state,
-            child: Stack(alignment: Alignment.center, children: [
-              Consumer<ShaderState>(
-                builder: (_, state, __) {
-                  state.activeShader
-                    ..setFloat(3, 1.0)
-                    ..setFloat(4, 0.0)
-                    ..setFloat(5, 1.0);
-                  return HypnoWidget(state.activeShader);
-                },
-              )
-            ])),
+    return ChangeNotifierProvider<ShaderState>(
+      create: (_) => state,
+      child: MaterialApp(
+        title: "Forgotten Hypnosis",
+        routes: {
+          '/': (BuildContext context) {
+            return const HomePage();
+          },
+          '/shader_settings': (BuildContext context) {
+            return const SettingsPage();
+          }
+        },
       ),
     );
   }
 }
 
-/*
-Okay, so here's the big (ordered) todo:
-Rewrite settings page. Make it use provider's state to remake the settings when needed
-Make settings page work
-Make the settings page retractable
- */
+//todo: come up with a better name
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 0.0,
+      child: GestureDetector(
+        onDoubleTap: () => Navigator.pushNamed(context, '/shader_settings'),
+        child: Consumer<ShaderState> (
+          builder: (_, state, __) {
+            return HypnoWidget(state.shader);
+          }
+        )
+      )
+    );
+  }
+}

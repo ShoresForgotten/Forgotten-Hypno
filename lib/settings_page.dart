@@ -1,176 +1,172 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'shader_state.dart';
 import 'shaders.dart';
 
-//class SettingsPage extends StatelessWidget
-/*
+import 'package:flutter/foundation.dart' as Foundation;
+
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: const Color(0xD94B4B4B),
-        child: Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
-            constraints: const BoxConstraints(maxWidth: 800),
-            child: Column(children: [
-              Row(children: const [
-                ShaderSelector(),
-              ]),
-              const Divider(),
-              Expanded(
-                  child: UniformSettings(
-                      shaderInfo: ShaderInherit.of(context).activeType))
-            ])));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Shader Settings'),
+      ),
+      //todo: consumers in main or in widgets. pick one.
+      body: Consumer<ShaderState>(builder: (_, state, __) {
+        return Column(
+          children: [
+            DropdownButton<ShaderEnum>(
+              value: state.type,
+              items: ShaderEnum.values.where((element) {
+                // disallow debugOnly shaders, unless kDebugMode is true
+                return (!element.debugOnly || Foundation.kDebugMode);
+              }).map((var value) {
+                return DropdownMenuItem(value: value, child: Text(value.name));
+              }).toList(),
+              onChanged: (ShaderEnum? value) {
+                if (value != null) {
+                  state.changeShader(value);
+                }
+              },
+            ),
+            const Divider(),
+            Expanded(
+              child: ShaderSettings(type: state.type),
+            )
+          ],
+        );
+      }),
+    );
   }
 }
 
-enum TempShaderEnum {
-  spiralShader(name: 'Spiral Shader');
-
-  const TempShaderEnum({
-    required this.name,
-  });
-
-  final String name;
-}
-
-class ShaderSelector extends StatefulWidget {
-  const ShaderSelector({super.key});
-
-  @override
-  State<ShaderSelector> createState() => _ShaderSelectorState();
-}
-
-class _ShaderSelectorState extends State<ShaderSelector> {
-  late ShaderEnum _selected;
+class ShaderSettings extends StatelessWidget {
+  final ShaderEnum type;
+  const ShaderSettings({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
-    _selected = ShaderInherit.of(context).activeType;
-    return DropdownButton<ShaderEnum>(
-      //icon: const Icon(Icons.arrow_drop_down), Don't have uses_material_design, so I don't think this works
-      icon: null,
-      value: _selected,
-      items: ShaderEnum.values.map((ShaderEnum value) {
-        return DropdownMenuItem<ShaderEnum>(
-          value: value,
-          child: Text(value.name),
+    List<Widget> widgets = [];
+    int currentIndex = 3; // 3 is always the first non-resolution/time uniform
+    for (var color in type.colors) {
+      widgets.add(ColorSelector(index: currentIndex, name: color.name));
+      currentIndex += 3;
+    }
+    for (var uniform in type.uniforms) {
+      if (uniform.isInt == false) {
+        // float changing widget here
+        widgets.add(FloatSelector(index: uniform.address, name: uniform.name));
+      } else {
+        // int changing widget here
+        widgets.add(IntSelector(index: uniform.address, name: uniform.name,));
+      }
+    }
+    return ListView(
+      //todo: look into listview builder to see if it's better than the list
+      //shrinkWrap: true,
+      children: widgets,
+    );
+  }
+}
+
+class ColorSelector extends StatelessWidget {
+  final int index;
+  final String name;
+  const ColorSelector({super.key, required this.index, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ShaderState>(builder: (_, state, __) {
+        return TextField(
+          //todo: there's a null assertion here
+          //todo: monospace font
+          //todo: TextEditingController needs to be disposed
+          controller: TextEditingController()
+            ..text = state.shader.getColor3(index)!.toHexString(),
+          onChanged: (value) {
+            final hexRegex = RegExp(r'^#?[\da-fA-F]{6}$');
+            if (hexRegex.hasMatch(value)) {
+              state.shader.setColor3(index, ColorHex.fromHexString(value));
+            }
+          },
+          inputFormatters: [
+            FilteringTextInputFormatter.singleLineFormatter,
+            FilteringTextInputFormatter(RegExp(r'[\da-fA-F]'), allow: true),
+            LengthLimitingTextInputFormatter(6)
+          ],
         );
-      }).toList(),
-      onChanged: (ShaderEnum? value) {
-        setState(() {
-          _selected = value!;
-        });
-        ShaderInherit.of(context).setShader(value!);
+    });
+  }
+}
+
+extension ColorHex on Color {
+  static Color fromHexString(String hexString) {
+    //todo: what if bad hex string
+    if (hexString.isNotEmpty && hexString[0] == '#') {
+      return Color(
+          int.parse(hexString.substring(1, 7), radix: 16) + 0xFF000000);
+    }
+    return Color(int.parse(hexString.substring(0, 6), radix: 16) + 0xFF000000);
+  }
+
+  String toHexString() {
+    return value.toRadixString(16).substring(2);
+  }
+}
+
+class IntSelector extends StatelessWidget {
+  final int index;
+  final String name;
+  const IntSelector({super.key, required this.index, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ShaderState>(
+      builder: (_, state, __) {
+        return TextField(
+          //todo: dispose
+          //todo: maximum/minimum input validation
+          controller: TextEditingController()
+            ..text = state.shader.getFloat(index)!.toInt().toString(),
+          onChanged: (value) {
+            state.shader.setFloat(index, int.parse(value).toDouble());
+          },
+          inputFormatters: [
+            FilteringTextInputFormatter.singleLineFormatter,
+            FilteringTextInputFormatter.digitsOnly
+          ],
+        );
       },
     );
   }
 }
 
-class UniformSettings extends StatelessWidget {
-  final ShaderEnum shaderInfo;
-  const UniformSettings({super.key, required this.shaderInfo});
+class FloatSelector extends StatelessWidget {
+  final int index;
+  final String name;
+  const FloatSelector({super.key, required this.index, required this.name});
 
-  //TODO: make this better. also something about coupling, and how high it is here and how low it should be
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        children: shaderInfo.uniforms.map((FloatUniform uniform) {
-      return UniformSlider(
-        key: Key('${shaderInfo.name}::${uniform.name}'),
-        uniformName: uniform.name,
-        uniformAddress: uniform.address,
-        min: uniform.min,
-        max: uniform.max,
-        init: uniform.init,
-        //divisions: uniform.divisions,
+    return Consumer<ShaderState>(builder: (_, state, __) {
+      return TextField(
+        //todo: dispose
+        //todo: maximum/minimum input validation
+        controller: TextEditingController()
+          ..text = state.shader.getFloat(index)!.toString(),
+        onChanged: (value) {
+          // todo: how to handle an invalid input?
+          state.shader.setFloat(index, double.parse(value));
+        },
+        inputFormatters: [
+          FilteringTextInputFormatter.singleLineFormatter,
+          FilteringTextInputFormatter(RegExp(r'[\d.]'), allow: true)
+        ],
       );
-    }).toList());
+    });
   }
 }
-
-class UniformSlider extends StatefulWidget {
-  final String uniformName;
-  final int uniformAddress;
-  final double min;
-  final double max;
-  final int? divisions;
-  final double init;
-  const UniformSlider(
-      {super.key,
-      required this.uniformName,
-      required this.uniformAddress,
-      required this.min,
-      required this.max,
-      required this.init,
-      this.divisions});
-
-  @override
-  State<UniformSlider> createState() => _UniformSliderState();
-}
-
-class _UniformSliderState extends State<UniformSlider> {
-  late double _uniformValue;
-  // TODO: Make the value display box editable so you don't have to use sliders?
-  //final TextEditingController _controller = TextEditingController();
-
-  @override
-  void initState() {
-    _uniformValue = widget.init;
-    super.initState();
-  }
-
-  /*
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-   */
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Text(
-              widget.uniformName,
-            ),
-            Text(
-              _uniformValue.toString(),
-            )
-            /*
-            TextField(
-              onSubmitted: (String value) {
-                setState(() {
-                  double? parsedDouble = double.tryParse(value);
-                  if (parsedDouble != null) {
-                    _uniformValue = parsedDouble;
-                  }
-                });
-              },
-              controller: _controller,
-            )
-             */
-          ]),
-          Slider.adaptive(
-              value: _uniformValue,
-              min: widget.min,
-              max: widget.max,
-              divisions: widget.divisions,
-              onChanged: (double value) {
-                setState(() {
-                  _uniformValue = value;
-                  ShaderInherit.of(context)
-                      .activeShader
-                      .setFloat(widget.uniformAddress, value);
-                });
-              })
-        ]));
-  }
-}
-*/

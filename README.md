@@ -1,16 +1,12 @@
-# hypno_app
+# Forgotten Hypno
 
-A self-explanatory hypnokink app
+A hypnokink app using shaders, written in flutter
 
-## Getting Started
+## Spiral shader
+The settings aren't labelled yet, but here's what each one does
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Color One (6-character hex code)
+- Color Two (hex code)
+- Number of arms (integer)
+- Angle of arms (floating point number)
+- Rotation speed (floating point number)

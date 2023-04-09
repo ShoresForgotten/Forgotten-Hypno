@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
+
 enum ShaderEnum {
   spiral(
     name: 'Spiral',
@@ -41,6 +43,35 @@ enum ShaderEnum {
         address: 11,
         isInt: false,
       ),
+    ],
+    debugOnly: false,
+  ),
+
+  twoColorRings(
+    name: 'Two Color Rings',
+    assetPath: 'shaders/2circle.frag',
+    colors: [
+      ColorUniform(
+          name: 'Color One', address: 3, defaultColor: Color(0xFFFFFFFF)),
+      ColorUniform(
+          name: 'Color Two', address: 6, defaultColor: Color(0xFF000000)),
+    ],
+    uniforms: [
+      FloatUniform(
+          name: 'Visible Rings',
+          address: 9,
+          min: 1.0,
+          max: 100.0,
+          init: 5.0,
+          isInt: true),
+      FloatUniform(
+        name: 'Speed',
+        address: 10,
+        min: -10.0,
+        max: 10.0,
+        init: 0.1,
+        isInt: false,
+      )
     ],
     debugOnly: false,
   ),

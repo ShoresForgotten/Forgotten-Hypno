@@ -1,4 +1,4 @@
-#version 440
+#version 460
 #include <flutter/runtime_effect.glsl>
 
 layout(location=0) uniform vec2 size;

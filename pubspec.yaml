@@ -31,3 +31,4 @@ flutter:
   shaders:
     - shaders/spiral.frag
     - shaders/test.frag
+    - shaders/2circle.frag

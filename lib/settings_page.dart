@@ -164,7 +164,7 @@ class FloatSelector extends StatelessWidget {
         },
         inputFormatters: [
           FilteringTextInputFormatter.singleLineFormatter,
-          FilteringTextInputFormatter(RegExp(r'[\d.]'), allow: true)
+          FilteringTextInputFormatter(RegExp(r'[\d.-]'), allow: true)
         ],
       );
     });

@@ -1,6 +1,8 @@
 # Forgotten Hypno
 
-A hypnokink app using shaders, written in flutter
+A hypnokink app using shaders, written in flutter. 
+
+Double tap/click to open settings. 
 
 ## Spiral shader
 The settings aren't labelled yet, but here's what each one does

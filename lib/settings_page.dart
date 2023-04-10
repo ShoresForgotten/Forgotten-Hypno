@@ -17,28 +17,32 @@ class SettingsPage extends StatelessWidget {
       ),
       //todo: consumers in main or in widgets. pick one.
       body: Consumer<ShaderState>(builder: (_, state, __) {
-        return Column(
-          children: [
-            DropdownButton<ShaderEnum>(
-              value: state.type,
-              items: ShaderEnum.values.where((element) {
-                // disallow debugOnly shaders, unless kDebugMode is true
-                return (!element.debugOnly || Foundation.kDebugMode);
-              }).map((var value) {
-                return DropdownMenuItem(value: value, child: Text(value.name));
-              }).toList(),
-              onChanged: (ShaderEnum? value) {
-                if (value != null) {
-                  state.changeShader(value);
-                }
-              },
-            ),
-            const Divider(),
-            Expanded(
-              child: ShaderSettings(type: state.type),
-            )
-          ],
-        );
+        return Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
+            child: Column(
+              children: [
+                DropdownButton<ShaderEnum>(
+                  value: state.type,
+                  items: ShaderEnum.values.where((element) {
+                    // disallow debugOnly shaders, unless kDebugMode is true
+                    return (!element.debugOnly || Foundation.kDebugMode);
+                  }).map((var value) {
+                    return DropdownMenuItem(
+                        value: value, child: Text(value.name));
+                  }).toList(),
+                  onChanged: (ShaderEnum? value) {
+                    if (value != null) {
+                      state.changeShader(value);
+                    }
+                  },
+                ),
+                const Divider(),
+                Expanded(
+                  child: ShaderSettings(type: state.type),
+                ),
+              ],
+            ));
       }),
     );
   }
@@ -62,7 +66,10 @@ class ShaderSettings extends StatelessWidget {
         widgets.add(FloatSelector(index: uniform.address, name: uniform.name));
       } else {
         // int changing widget here
-        widgets.add(IntSelector(index: uniform.address, name: uniform.name,));
+        widgets.add(IntSelector(
+          index: uniform.address,
+          name: uniform.name,
+        ));
       }
     }
     return ListView(
@@ -81,24 +88,24 @@ class ColorSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ShaderState>(builder: (_, state, __) {
-        return TextField(
-          //todo: there's a null assertion here
-          //todo: monospace font
-          //todo: TextEditingController needs to be disposed
-          controller: TextEditingController()
-            ..text = state.shader.getColor3(index)!.toHexString(),
-          onChanged: (value) {
-            final hexRegex = RegExp(r'^#?[\da-fA-F]{6}$');
-            if (hexRegex.hasMatch(value)) {
-              state.shader.setColor3(index, ColorHex.fromHexString(value));
-            }
-          },
-          inputFormatters: [
-            FilteringTextInputFormatter.singleLineFormatter,
-            FilteringTextInputFormatter(RegExp(r'[\da-fA-F]'), allow: true),
-            LengthLimitingTextInputFormatter(6)
-          ],
-        );
+      return TextField(
+        //todo: there's a null assertion here
+        //todo: monospace font
+        //todo: TextEditingController needs to be disposed
+        controller: TextEditingController()
+          ..text = state.shader.getColor3(index)!.toHexString(),
+        onChanged: (value) {
+          final hexRegex = RegExp(r'^#?[\da-fA-F]{6}$');
+          if (hexRegex.hasMatch(value)) {
+            state.shader.setColor3(index, ColorHex.fromHexString(value));
+          }
+        },
+        inputFormatters: [
+          FilteringTextInputFormatter.singleLineFormatter,
+          FilteringTextInputFormatter(RegExp(r'[\da-fA-F]'), allow: true),
+          LengthLimitingTextInputFormatter(6)
+        ],
+      );
     });
   }
 }

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'shader_state.dart';
 import 'shaders.dart';
 
-import 'package:flutter/foundation.dart' as Foundation;
+import 'package:flutter/foundation.dart' as foundation;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -23,7 +23,7 @@ class SettingsPage extends StatelessWidget {
               value: state.type,
               items: ShaderEnum.values.where((element) {
                 // disallow debugOnly shaders, unless kDebugMode is true
-                return (!element.debugOnly || Foundation.kDebugMode);
+                return (!element.debugOnly || foundation.kDebugMode);
               }).map((var value) {
                 return DropdownMenuItem(value: value, child: Text(value.name));
               }).toList(),
@@ -62,7 +62,10 @@ class ShaderSettings extends StatelessWidget {
         widgets.add(FloatSelector(index: uniform.address, name: uniform.name));
       } else {
         // int changing widget here
-        widgets.add(IntSelector(index: uniform.address, name: uniform.name,));
+        widgets.add(IntSelector(
+          index: uniform.address,
+          name: uniform.name,
+        ));
       }
     }
     return ListView(
@@ -81,24 +84,26 @@ class ColorSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ShaderState>(builder: (_, state, __) {
-        return TextField(
-          //todo: there's a null assertion here
-          //todo: monospace font
-          //todo: TextEditingController needs to be disposed
-          controller: TextEditingController()
-            ..text = state.shader.getColor3(index)!.toHexString(),
-          onChanged: (value) {
-            final hexRegex = RegExp(r'^#?[\da-fA-F]{6}$');
-            if (hexRegex.hasMatch(value)) {
-              state.shader.setColor3(index, ColorHex.fromHexString(value));
-            }
-          },
-          inputFormatters: [
-            FilteringTextInputFormatter.singleLineFormatter,
-            FilteringTextInputFormatter(RegExp(r'[\da-fA-F]'), allow: true),
-            LengthLimitingTextInputFormatter(6)
-          ],
-        );
+      return TextFormField(
+        //todo: there's a null assertion here
+        //todo: monospace font
+        initialValue: state.shader.getColor3(index)!.toHexString(),
+        onChanged: (value) {
+          final hexRegex = RegExp(r'^#?[\da-fA-F]{6}$');
+          if (hexRegex.hasMatch(value)) {
+            state.shader.setColor3(index, ColorHex.fromHexString(value));
+          }
+        },
+        inputFormatters: [
+          FilteringTextInputFormatter.singleLineFormatter,
+          FilteringTextInputFormatter(RegExp(r'[\da-fA-F]'), allow: true),
+          LengthLimitingTextInputFormatter(6)
+        ],
+        validator: (String? value) {
+          final hexRegex = RegExp(r'^#?[\da-fA-F]{6}$');
+          return (value != null && hexRegex.hasMatch(value)) ? 'Invalid hex code' : null;
+        }
+      );
     });
   }
 }
@@ -127,11 +132,9 @@ class IntSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ShaderState>(
       builder: (_, state, __) {
-        return TextField(
-          //todo: dispose
+        return TextFormField(
           //todo: maximum/minimum input validation
-          controller: TextEditingController()
-            ..text = state.shader.getFloat(index)!.toInt().toString(),
+          initialValue: state.shader.getFloat(index)!.toInt().toString(),
           onChanged: (value) {
             state.shader.setFloat(index, int.parse(value).toDouble());
           },
@@ -139,6 +142,10 @@ class IntSelector extends StatelessWidget {
             FilteringTextInputFormatter.singleLineFormatter,
             FilteringTextInputFormatter.digitsOnly
           ],
+          keyboardType: const TextInputType.numberWithOptions(
+            signed: false,
+            decimal: false,
+          ),
         );
       },
     );
@@ -153,19 +160,33 @@ class FloatSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ShaderState>(builder: (_, state, __) {
-      return TextField(
+      return TextFormField(
         //todo: dispose
         //todo: maximum/minimum input validation
-        controller: TextEditingController()
-          ..text = state.shader.getFloat(index)!.toString(),
+        initialValue: state.shader.getFloat(index)!.toString(),
         onChanged: (value) {
           // todo: how to handle an invalid input?
-          state.shader.setFloat(index, double.parse(value));
+            state.shader.setFloat(index, double.parse(value));
         },
         inputFormatters: [
           FilteringTextInputFormatter.singleLineFormatter,
           FilteringTextInputFormatter(RegExp(r'[\d.-]'), allow: true)
         ],
+        keyboardType: const TextInputType.numberWithOptions(
+          signed: true,
+          decimal: true,
+        ),
+        validator: (String? value) {
+          if (value != null) {
+            try {
+              double.parse(value);
+              return null;
+            }
+            catch (e) {
+              return 'Invalid input';
+            }
+          }
+        },
       );
     });
   }

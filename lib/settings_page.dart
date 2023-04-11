@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'shader_state.dart';
 import 'shaders.dart';
 
-import 'package:flutter/foundation.dart' as foundation;
+import 'package:flutter/foundation.dart' as Foundation;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -17,28 +17,32 @@ class SettingsPage extends StatelessWidget {
       ),
       //todo: consumers in main or in widgets. pick one.
       body: Consumer<ShaderState>(builder: (_, state, __) {
-        return Column(
-          children: [
-            DropdownButton<ShaderEnum>(
-              value: state.type,
-              items: ShaderEnum.values.where((element) {
-                // disallow debugOnly shaders, unless kDebugMode is true
-                return (!element.debugOnly || foundation.kDebugMode);
-              }).map((var value) {
-                return DropdownMenuItem(value: value, child: Text(value.name));
-              }).toList(),
-              onChanged: (ShaderEnum? value) {
-                if (value != null) {
-                  state.changeShader(value);
-                }
-              },
-            ),
-            const Divider(),
-            Expanded(
-              child: ShaderSettings(type: state.type),
-            )
-          ],
-        );
+        return Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 25.0),
+            child: Column(
+              children: [
+                DropdownButton<ShaderEnum>(
+                  value: state.type,
+                  items: ShaderEnum.values.where((element) {
+                    // disallow debugOnly shaders, unless kDebugMode is true
+                    return (!element.debugOnly || Foundation.kDebugMode);
+                  }).map((var value) {
+                    return DropdownMenuItem(
+                        value: value, child: Text(value.name));
+                  }).toList(),
+                  onChanged: (ShaderEnum? value) {
+                    if (value != null) {
+                      state.changeShader(value);
+                    }
+                  },
+                ),
+                const Divider(),
+                Expanded(
+                  child: ShaderSettings(type: state.type),
+                ),
+              ],
+            ));
       }),
     );
   }

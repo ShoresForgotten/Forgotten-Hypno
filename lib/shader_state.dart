@@ -4,6 +4,7 @@ import 'shaders.dart';
 import 'shader_wrapper.dart';
 
 //todo: look into providing a separate type provider for less rebuilds
+/// State holding ChangeNotifier
 class ShaderState with ChangeNotifier {
   late ShaderEnum type;
   late ShaderWrapper shader;

@@ -7,9 +7,8 @@ layout(location=2)uniform float iTime;
 // Colors
 layout(location=3)uniform vec3 colors[2];
 // Other uniforms
-layout(location=9)uniform float arms;
-layout(location=10)uniform float zoom;
-layout(location=11)uniform float speed;
+layout(location=9)uniform float zoom;
+layout(location=10)uniform float speed;
 out vec4 fragColor;
 
 // https://stackoverflow.com/a/32353829
@@ -24,7 +23,8 @@ vec2 polarCoord(vec2 coord, vec2 resolution) {
 
 void main() {
     vec2 fragCoord = FlutterFragCoord();
-    vec2 pos = polarCoord(fragCoord.xy, iResolution);// get the polar coordinates of the current fragment
+    vec2 rawPos = polarCoord(fragCoord.xy, iResolution);// get the polar coordinates of the current fragment
+    vec2 pos = vec2(rawPos.x, mod(rawPos.y + 0.25, 1.0));
 
     float spiral = mod(pos.y + iTime * speed * (1./60.) + pos.x * zoom, 1.0 );
     float armInterval = 1.0 / (arms * 2.);

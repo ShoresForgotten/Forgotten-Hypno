@@ -1,11 +1,12 @@
 import 'dart:ui';
-
 import 'shader_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 // https://medium.com/flutter-community/flutter-widgets-with-shaders-94e6e9a9640d
+/// StatefulWidget just to hold the pointer to the fragment shader
 class HypnoWidget extends StatefulWidget {
+  /// The active FragmentShader
   final ShaderWrapper _shader;
   const HypnoWidget(this._shader, {super.key});
   @override
@@ -14,6 +15,7 @@ class HypnoWidget extends StatefulWidget {
 
 class _HypnoWidgetState extends State<HypnoWidget> {
   Duration _previous = Duration.zero;
+
   late final Ticker _ticker;
   double dt = 0;
 

@@ -4,19 +4,11 @@
 layout(location=0) uniform vec2 iResolution;
 layout(location=2) uniform float iTime;
 // colors
-layout(location=3) uniform vec3 colorOne;
-layout(location=6) uniform vec3 colorTwo;
+layout(location=3) uniform vec3 colors[2];
 // other
-layout(location=9) uniform float visibleRings;
-layout(location=10) uniform float speed;
+layout(location=11) uniform float zoom;
+layout(location=12) uniform float speed;
 out vec4 fragColor;
-
-float floatWrap(float x, float wrap) {
-    if (x > wrap) {
-        return x - floor(x / wrap) * wrap;
-    }
-    else return x;
-}
 
 // https://stackoverflow.com/a/32353829
 vec2 polarCoord(vec2 coord, vec2 resolution) {
@@ -27,17 +19,19 @@ vec2 polarCoord(vec2 coord, vec2 resolution) {
     angle = angle/(radians(180.)*2.0) + 0.5; // angle is between [-Pi,Pi], so get it into [.0,1.0]
     return vec2(dist, angle);
 }
+
 void main() {
     vec2 fragCoord = FlutterFragCoord();
     vec2 pos = polarCoord(fragCoord.xy, iResolution.xy);
-
     // How wide a pair of rings are.
-    float twoRingWidth = 1. / (visibleRings);
-    float ringPos = floatWrap(pos.x + iTime * speed, twoRingWidth);
-    if (mod(int(floor((ringPos / twoRingWidth) * 2.)), 2) == 0) {
-        fragColor = vec4(colorOne, 1.);
+    float twoRingWidth = 1. / zoom;
+    // Wrap around until we've got a position within [0.0, twoRingWidth)
+    float ringPos = mod(pos.x + iTime * speed, twoRingWidth);
+    // Divide by twoRingWidth to get back into [0.0, 1.0]
+    if (ringPos / twoRingWidth > .5){
+        fragColor = vec4(colors[0], 1.);
     }
     else{
-        fragColor = vec4(colorTwo, 1.);
+        fragColor = vec4(colors[1], 1.);
     }
 }

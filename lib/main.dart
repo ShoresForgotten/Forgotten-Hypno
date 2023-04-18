@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'settings_page.dart';
-import 'hypno_widget.dart';
+import 'shader_widget.dart';
 import 'shader_state.dart';
 import 'shaders.dart';
 
@@ -43,15 +43,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 0.0,
-      child: GestureDetector(
-        onDoubleTap: () => Navigator.pushNamed(context, '/shader_settings'),
-        child: Consumer<ShaderState> (
-          builder: (_, state, __) {
-            return HypnoWidget(state.shader);
-          }
-        )
-      )
-    );
+        elevation: 0.0,
+        child: GestureDetector(
+            onDoubleTap: () => Navigator.pushNamed(context, '/shader_settings'),
+            child: Consumer<ShaderState>(builder: (_, state, __) {
+              return ShaderWidget(state.shader);
+            })));
   }
 }

@@ -4,12 +4,12 @@
 layout(location=0) uniform vec2 iResolution;
 layout(location=2) uniform float iTime;
 // colors
-layout(location=3) uniform vec3 colors[4];
+layout(location=3) uniform vec3 colors[6];
 // sizes
-layout(location=15) uniform float sizes[4];
+layout(location=21) uniform float sizes[6];
 // other
-layout(location=19) uniform float zoom;
-layout(location=20) uniform float speed;
+layout(location=27) uniform float zoom;
+layout(location=28) uniform float speed;
 out vec4 fragColor;
 
 // https://stackoverflow.com/a/32353829
@@ -42,7 +42,7 @@ void main() {
             scaledSizes[i] = sizes[i] / sizeSum;
         }
         else {
-            scaledSizes[i] = sizes[i] / sizeSum + scaledSizes[i - 1];
+            scaledSizes[i] = sizes[i] / sizeSum + scaledSizes [i - 1];
         }
     }
 
@@ -53,11 +53,17 @@ void main() {
     else if(relativeRingPos >= scaledSizes[0] && relativeRingPos < scaledSizes[1]){
         fragColor = vec4(colors[1], 1.);
     }
-    else if(relativeRingPos >= scaledSizes[1] && relativeRingPos < scaledSizes[2]){
+    else if(relativeRingPos >= scaledSizes[1] && relativeRingPos < scaledSizes[2]) {
         fragColor = vec4(colors[2], 1.);
     }
-    else {
+    else if(relativeRingPos >= scaledSizes[2] && relativeRingPos < scaledSizes[3]){
         fragColor = vec4(colors[3], 1.);
+    }
+    else if(relativeRingPos >= scaledSizes[3] && relativeRingPos < scaledSizes[4]){
+        fragColor = vec4(colors[4], 1.);
+    }
+    else {
+        fragColor = vec4(colors[5], 1.);
     }
     // if SkSL allowed for non-constant index array access I could divide relativeRingPos by visibleRings
     // And then access the color at the resulting number (truncated to int)

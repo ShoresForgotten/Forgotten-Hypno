@@ -5,15 +5,15 @@ import 'package:flutter/scheduler.dart';
 
 // https://medium.com/flutter-community/flutter-widgets-with-shaders-94e6e9a9640d
 /// StatefulWidget just to hold the pointer to the fragment shader
-class HypnoWidget extends StatefulWidget {
+class ShaderWidget extends StatefulWidget {
   /// The active FragmentShader
   final ShaderWrapper _shader;
-  const HypnoWidget(this._shader, {super.key});
+  const ShaderWidget(this._shader, {super.key});
   @override
-  State<HypnoWidget> createState() => _HypnoWidgetState();
+  State<ShaderWidget> createState() => _ShaderWidgetState();
 }
 
-class _HypnoWidgetState extends State<HypnoWidget> {
+class _ShaderWidgetState extends State<ShaderWidget> {
   Duration _previous = Duration.zero;
 
   late final Ticker _ticker;
@@ -21,9 +21,9 @@ class _HypnoWidgetState extends State<HypnoWidget> {
 
   @override
   void initState() {
+    super.initState();
     _ticker = Ticker(_tick);
     _ticker.start();
-    super.initState();
   }
 
   @override
@@ -45,18 +45,18 @@ class _HypnoWidgetState extends State<HypnoWidget> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return CustomPaint(
-      painter: _HypnoPainter(
+      painter: _ShaderPainter(
           dt, widget._shader.shader), //extra shader because wrapper
       size: size,
     );
   }
 }
 
-class _HypnoPainter extends CustomPainter {
+class _ShaderPainter extends CustomPainter {
   double iTime;
   FragmentShader shader;
 
-  _HypnoPainter(this.iTime, this.shader);
+  _ShaderPainter(this.iTime, this.shader);
   @override
   void paint(Canvas canvas, Size size) {
     final Rect rect = Offset.zero & size;
@@ -71,5 +71,5 @@ class _HypnoPainter extends CustomPainter {
   }
 
   @override
-  shouldRepaint(_HypnoPainter oldDelegate) => true;
+  shouldRepaint(_ShaderPainter oldDelegate) => true;
 }

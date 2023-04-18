@@ -34,3 +34,5 @@ flutter:
     - shaders/test.frag
     - shaders/2ring.frag
     - shaders/4ring.frag
+    - shaders/6ring.frag
+    - shaders/heart.frag

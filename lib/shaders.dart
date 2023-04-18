@@ -52,34 +52,24 @@ enum ShaderEnum {
     assetPath: 'shaders/2ring.frag',
     colors: [
       ColorUniform(
-          name: 'Color One', address: 3, defaultColor: Color(0xFFFFFFFF)),
+          name: 'Color One',
+          address: 3,
+          defaultColor: Color(0xFFFFFFFF),
+          size: ColorSize(address: 9, defaultSize: 1.0)),
       ColorUniform(
-          name: 'Color Two', address: 6, defaultColor: Color(0xFF000000)),
+          name: 'Color Two',
+          address: 6,
+          defaultColor: Color(0xFF000000),
+          size: ColorSize(address: 10, defaultSize: 1.0)),
     ],
     uniforms: [
       FloatUniform(
-        name: 'Size Color One',
-        address: 9,
+        name: 'Zoom',
+        address: 11,
         min: 0.0,
         max: null,
-        init: 1.0,
+        init: 5.0,
         isInt: false,
-      ),
-      FloatUniform(
-        name: 'Size Color Two',
-        address: 10,
-        min: 0.0,
-        max: null,
-        init: 1.0,
-        isInt: false,
-      ),
-      FloatUniform(
-          name: 'Zoom',
-          address: 11,
-          min: 1.0,
-          max: null,
-          init: 5.0,
-          isInt: false,
       ),
       FloatUniform(
         name: 'Speed',
@@ -94,38 +84,133 @@ enum ShaderEnum {
   ),
 
   fourColorRings(
-    name: 'Four Color Rings',
-    assetPath: 'shaders/4ring.frag',
-    colors: [
-      ColorUniform(
-        name: 'Color One', address: 3, defaultColor: Color(0xFF000000)),
-      ColorUniform(
-          name: 'Color Two', address: 6, defaultColor: Color(0xFF76A420)),
-      ColorUniform(
-          name: 'Color Three', address: 9, defaultColor: Color(0xFF04BAAD)),
-      ColorUniform(
-          name: 'Color Four', address: 12, defaultColor: Color(0xFF669BE1)),
-    ],
-  uniforms: [
-    FloatUniform(
-      name: 'Zoom',
-      address: 15,
-      min: 1.0,
-      max: null,
-      init: 3.0,
-      isInt: false,
-    ),
-    FloatUniform(
-      name: 'Speed',
-      address: 16,
-      min: null,
-      max: null,
-      init: 0.1,
-      isInt: false,
-    ),
-  ],
-  debugOnly: false
-  ),
+      name: 'Four Color Rings',
+      assetPath: 'shaders/4ring.frag',
+      colors: [
+        ColorUniform(
+            name: 'Color One',
+            address: 3,
+            defaultColor: Color(0xFF000000),
+            size: ColorSize(address: 15, defaultSize: 1.0)),
+        ColorUniform(
+            name: 'Color Two',
+            address: 6,
+            defaultColor: Color(0xFF76A420),
+            size: ColorSize(address: 16, defaultSize: 1.0)),
+        ColorUniform(
+            name: 'Color Three',
+            address: 9,
+            defaultColor: Color(0xFF04BAAD),
+            size: ColorSize(address: 17, defaultSize: 1.0)),
+        ColorUniform(
+            name: 'Color Four',
+            address: 12,
+            defaultColor: Color(0xFF669BE1),
+            size: ColorSize(address: 19, defaultSize: 1.0)),
+      ],
+      uniforms: [
+        FloatUniform(
+          name: 'Zoom',
+          address: 19,
+          min: 1.0,
+          max: null,
+          init: 3.0,
+          isInt: false,
+        ),
+        FloatUniform(
+          name: 'Speed',
+          address: 20,
+          min: null,
+          max: null,
+          init: -0.1,
+          isInt: false,
+        ),
+      ],
+      debugOnly: false),
+
+  sixColorRings(
+      name: 'Six Color Rings',
+      assetPath: 'shaders/6ring.frag',
+      colors: [
+        ColorUniform(
+            name: 'Color One',
+            address: 3,
+            defaultColor: Color(0xFF000000),
+            size: ColorSize(address: 21, defaultSize: 1.0)),
+        ColorUniform(
+            name: 'Color Two',
+            address: 6,
+            defaultColor: Color(0xFF76A420),
+            size: ColorSize(address: 22, defaultSize: 1.0)),
+        ColorUniform(
+            name: 'Color Three',
+            address: 9,
+            defaultColor: Color(0xFF000000),
+            size: ColorSize(address: 23, defaultSize: 0.05)),
+        ColorUniform(
+            name: 'Color Four',
+            address: 12,
+            defaultColor: Color(0xFF669BE1),
+            size: ColorSize(address: 24, defaultSize: 1.0)),
+        ColorUniform(
+            name: 'Color Five',
+            address: 15,
+            defaultColor: Color(0xFF000000),
+            size: ColorSize(address: 25, defaultSize: 0.05)),
+        ColorUniform(
+            name: 'Color Six',
+            address: 18,
+            defaultColor: Color(0xFF04BAAD),
+            size: ColorSize(address: 26, defaultSize: 1.0)),
+      ],
+      uniforms: [
+        FloatUniform(
+          name: 'Zoom',
+          address: 27,
+          min: 1.0,
+          max: null,
+          init: 1.0,
+          isInt: false,
+        ),
+        FloatUniform(
+          name: 'Speed',
+          address: 28,
+          min: null,
+          max: null,
+          init: -0.1,
+          isInt: false,
+        ),
+      ],
+      debugOnly: false),
+
+  heartShader(
+      name: 'Heart',
+      assetPath: 'shaders/heart.frag',
+      colors: [
+        ColorUniform(
+            name: 'Color One', address: 3, defaultColor: Color(0xFFFFFFFF)),
+        ColorUniform(
+            name: 'Color Two', address: 6, defaultColor: Color(0xFF000000)),
+      ],
+      uniforms: [
+        FloatUniform(
+          name: 'Zoom',
+          address: 9,
+          min: null,
+          max: null,
+          init: 1.0,
+          isInt: false,
+        ),
+        FloatUniform(
+          name: 'Speed',
+          address: 10,
+          min: null,
+          max: null,
+          init: 1.0,
+          isInt: false,
+        )
+      ],
+      debugOnly: true),
 
   testShader(
     name: 'Test Shader',
@@ -174,7 +259,17 @@ class ColorUniform {
   final String name;
   final int address;
   final Color defaultColor;
+  final ColorSize? size;
 
   const ColorUniform(
-      {required this.name, required this.address, required this.defaultColor});
+      {required this.name,
+      required this.address,
+      required this.defaultColor,
+      this.size});
+}
+
+class ColorSize {
+  final int address;
+  final double defaultSize;
+  const ColorSize({required this.address, required this.defaultSize});
 }

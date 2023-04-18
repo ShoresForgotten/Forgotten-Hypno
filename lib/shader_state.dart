@@ -52,19 +52,17 @@ class ShaderState with ChangeNotifier {
   }
 
   static void _setDefaultColors(ShaderWrapper shader, ShaderEnum type) {
-    int offset = 3; // first 3 uniforms are always size (xy) and time
     for (var color in type.colors) {
-      shader.setColor3(offset, color.defaultColor);
-      offset += 3;
+      shader.setColor3(color.address, color.defaultColor);
+      if (color.size != null) {
+        shader.setFloat(color.size!.address, color.size!.defaultSize);
+      }
     }
   }
 
   static void _setDefaultUniforms(ShaderWrapper shader, ShaderEnum type) {
-    int index = 3 + type.colors.length * 3;
     for (var uniform in type.uniforms) {
-      shader.setFloat(index, uniform.init);
-      ++index;
+      shader.setFloat(uniform.address, uniform.init);
     }
   }
 }
-

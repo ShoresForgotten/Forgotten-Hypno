@@ -183,35 +183,6 @@ enum ShaderEnum {
       ],
       debugOnly: false),
 
-  heartShader(
-      name: 'Heart',
-      assetPath: 'shaders/heart.frag',
-      colors: [
-        ColorUniform(
-            name: 'Color One', address: 3, defaultColor: Color(0xFFFFFFFF)),
-        ColorUniform(
-            name: 'Color Two', address: 6, defaultColor: Color(0xFF000000)),
-      ],
-      uniforms: [
-        FloatUniform(
-          name: 'Zoom',
-          address: 9,
-          min: null,
-          max: null,
-          init: 1.0,
-          isInt: false,
-        ),
-        FloatUniform(
-          name: 'Speed',
-          address: 10,
-          min: null,
-          max: null,
-          init: 1.0,
-          isInt: false,
-        )
-      ],
-      debugOnly: true),
-
   testShader(
     name: 'Test Shader',
     assetPath: 'shaders/test.frag',

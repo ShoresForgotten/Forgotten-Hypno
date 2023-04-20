@@ -34,20 +34,16 @@ class SettingsPage extends StatelessWidget {
                     }).toList(),
                     onChanged: (ShaderEnum? value) {
                       if (value != null) {
-                        state.changeShader(value);
-                        //todo: this, but better
-                        Navigator.popAndPushNamed(context, '/shader_settings');
+                        state.setType(value);
                       }
                     },
                   );
                 }),
                 const Divider(),
-                Expanded(
-                child: Consumer<ShaderState>(builder: (_, state, __) {
-                    return ShaderSettings(state: state);
-                  }
-                  )
-                ),
+                Expanded(child: Consumer<ShaderState>(builder: (_, state, __) {
+                  return ShaderSettings(
+                      key: ValueKey<ShaderEnum>(state.type), state: state);
+                })),
               ],
             )));
   }

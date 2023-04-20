@@ -6,7 +6,7 @@ layout(location=2) uniform float iTime;
 // colors
 layout(location=3) uniform vec3 colors[2];
 // sizes
-layout(location=9) uniform float sizes[2];
+layout(location=9)uniform float sizes[2];
 // other
 layout(location=11) uniform float zoom;
 layout(location=12) uniform float speed;

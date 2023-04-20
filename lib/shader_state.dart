@@ -42,7 +42,7 @@ class ShaderState with ChangeNotifier {
     _setDefaultUniforms(shader, type);
   }
 
-  void changeShader(ShaderEnum type) async {
+  Future<void> setType(ShaderEnum type) async {
     if (_shaderCache[type] == null) {
       await compileShader(type);
     }

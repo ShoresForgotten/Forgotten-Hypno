@@ -8,14 +8,16 @@ enum ShaderEnum {
     assetPath: 'shaders/spiral.frag',
     colors: [
       ColorUniform(
-        name: 'Color 1',
+        name: 'Color One',
         address: 3,
         defaultColor: Color(0xFFFFFFFF),
+        size: ColorSize(address: 9, defaultSize: 1.0),
       ),
       ColorUniform(
-        name: 'Color 2',
+        name: 'Color Two',
         address: 6,
         defaultColor: Color(0xFF000000),
+        size: ColorSize(address: 10, defaultSize: 1.0),
       )
     ], // alpha will be ignored, but i'm leaving it at FF for future proofing
     uniforms: [
@@ -24,7 +26,7 @@ enum ShaderEnum {
         min: 1.0,
         max: null,
         init: 10.0,
-        address: 9,
+        address: 11,
         isInt: true,
       ),
       FloatUniform(
@@ -32,7 +34,7 @@ enum ShaderEnum {
         min: null,
         max: null,
         init: 0.5,
-        address: 10,
+        address: 12,
         isInt: false,
       ),
       FloatUniform(
@@ -40,7 +42,7 @@ enum ShaderEnum {
         min: null,
         max: null,
         init: 1.0,
-        address: 11,
+        address: 13,
         isInt: false,
       ),
     ],
@@ -136,32 +138,32 @@ enum ShaderEnum {
             name: 'Color One',
             address: 3,
             defaultColor: Color(0xFF000000),
-            size: ColorSize(address: 21, defaultSize: 1.0)),
+            size: ColorSize(address: 21, defaultSize: 20.0)),
         ColorUniform(
             name: 'Color Two',
             address: 6,
             defaultColor: Color(0xFF76A420),
-            size: ColorSize(address: 22, defaultSize: 1.0)),
+            size: ColorSize(address: 22, defaultSize: 20.0)),
         ColorUniform(
             name: 'Color Three',
             address: 9,
             defaultColor: Color(0xFF000000),
-            size: ColorSize(address: 23, defaultSize: 0.05)),
+            size: ColorSize(address: 23, defaultSize: 1.0)),
         ColorUniform(
             name: 'Color Four',
             address: 12,
             defaultColor: Color(0xFF669BE1),
-            size: ColorSize(address: 24, defaultSize: 1.0)),
+            size: ColorSize(address: 24, defaultSize: 20.0)),
         ColorUniform(
             name: 'Color Five',
             address: 15,
             defaultColor: Color(0xFF000000),
-            size: ColorSize(address: 25, defaultSize: 0.05)),
+            size: ColorSize(address: 25, defaultSize: 1.0)),
         ColorUniform(
             name: 'Color Six',
             address: 18,
             defaultColor: Color(0xFF04BAAD),
-            size: ColorSize(address: 26, defaultSize: 1.0)),
+            size: ColorSize(address: 26, defaultSize: 20.0)),
       ],
       uniforms: [
         FloatUniform(
@@ -189,7 +191,16 @@ enum ShaderEnum {
     colors: [
       ColorUniform(name: 'Color', address: 3, defaultColor: Color(0xFFFF00FF))
     ],
-    uniforms: [],
+    uniforms: [
+      FloatUniform(
+        name: 'Dingus',
+        address: 6,
+        min: null,
+        max: null,
+        init: 1.0,
+        isInt: false,
+      )
+    ],
     debugOnly: true,
   );
 

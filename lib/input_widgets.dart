@@ -166,7 +166,7 @@ class ColorInput extends StatelessWidget {
         initialValue: state.shader.getColor3(uniform.address)!.toHexString(),
         onChanged: (value) {
           if (formKey.currentState!.validate()) {
-            var color = ColorHex.fromHexString(value)!;
+            var color = hexStringToColor(value)!;
             state.shader.setColor3(uniform.address, color);
             colorCallback?.call(color);
           }

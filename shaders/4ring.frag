@@ -22,7 +22,7 @@ vec2 polarCoord(vec2 coord, vec2 resolution) {
     return vec2(dist, angle);
 }
 void main() {
-    vec2 fragCoord = FlutterFragCoord();
+    vec2 fragCoord = FlutterFragCoord().xy;
     vec2 pos = polarCoord(fragCoord.xy, iResolution.xy);
 
     // How wide a group of rings is.

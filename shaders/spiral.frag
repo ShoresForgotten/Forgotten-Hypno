@@ -25,7 +25,7 @@ vec2 polarCoord(vec2 coord, vec2 resolution) {
 }
 
 void main() {
-    vec2 fragCoord = FlutterFragCoord();
+    vec2 fragCoord = FlutterFragCoord().xy;
     vec2 pos = polarCoord(fragCoord.xy, iResolution);// get the polar coordinates of the current fragment
 
     float sizeSum = 0.;
@@ -38,9 +38,9 @@ void main() {
     }
 
     float spiral = mod(pos.y + iTime * speed * (1./60.) + pos.x * zoom, 1.0 );
-    float armInterval = 1.0 / (arms * 2.);
+    float armInterval = 1.0 / arms;
     // divide the angle of the current position by the arm interval to get the arm we're on
-    if (mod(abs(spiral / armInterval), 2.0) > scaledSizes[0] * 2.) {
+    if (mod(abs(spiral / armInterval), 1.0) > scaledSizes[0]) {
         fragColor = vec4(colors[0], 1.);
     }
     else {

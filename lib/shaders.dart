@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 
 enum ShaderEnum {
+  //todo: find some way to automate this (code generation?)
   spiral(
     name: 'Spiral',
     assetPath: 'shaders/spiral.frag',
@@ -108,7 +109,7 @@ enum ShaderEnum {
             name: 'Color Four',
             address: 12,
             defaultColor: Color(0xFF669BE1),
-            size: ColorSize(address: 19, defaultSize: 1.0)),
+            size: ColorSize(address: 18, defaultSize: 1.0)),
       ],
       uniforms: [
         FloatUniform(

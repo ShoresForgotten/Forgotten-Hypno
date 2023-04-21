@@ -22,7 +22,7 @@ vec2 polarCoord(vec2 coord, vec2 resolution) {
     return vec2(dist, angle);
 }
 void main() {
-    vec2 fragCoord = FlutterFragCoord();
+    vec2 fragCoord = FlutterFragCoord().xy;
     vec2 pos = polarCoord(fragCoord.xy, iResolution.xy);
 
     // How wide a group of rings is.
@@ -65,7 +65,7 @@ void main() {
     else {
         fragColor = vec4(colors[5], 1.);
     }
-    // if SkSL allowed for non-constant index array access I could divide relativeRingPos by visibleRings
+    // if SkSL allowed for non-constant expression array indices I could divide relativeRingPos by visibleRings
     // And then access the color at the resulting number (truncated to int)
     // This would theoretically allow for an arbitrary amount of colors between [1, (MAX_UNIFORM_LOCATIONS - 5) / 3]
     // and that would be pretty cool

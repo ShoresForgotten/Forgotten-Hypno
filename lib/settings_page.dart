@@ -15,6 +15,20 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Shader Settings'),
+          actions: [
+            PopupMenuButton(
+              itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<Function>>[
+                PopupMenuItem(
+                  value: () => showAboutDialog(context: context),
+                  child: const Text('About'),
+                )
+              ],
+              onSelected: (Function fun) {
+                fun.call();
+              },
+            )
+          ],
         ),
         //todo: consumers in main or in widgets. pick one.
         body: Padding(

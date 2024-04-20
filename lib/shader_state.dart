@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'shaders.dart';
-import 'shader_wrapper.dart';
+import 'package:forgotten_hypno/shaders.dart';
+import 'package:forgotten_hypno/shader_wrapper.dart';
 
 //todo: look into providing a separate type provider for less rebuilds
 /// State holding ChangeNotifier

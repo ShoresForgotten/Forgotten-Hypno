@@ -186,6 +186,17 @@ enum ShaderEnum {
       ],
       debugOnly: false),
 
+  radialFade(
+    name: 'Radial Fade',
+    assetPath: 'shaders/radial_fade.frag',
+    colors: [
+      ColorUniform(name: 'Color One', address: 3, defaultColor: Color(0xFFFF00FF)),
+      ColorUniform(name: 'Color Two', address: 6, defaultColor: Color(0xFF000000))
+    ],
+    uniforms: [],
+    debugOnly: false
+  ),
+
   testShader(
     name: 'Test Shader',
     assetPath: 'shaders/test.frag',

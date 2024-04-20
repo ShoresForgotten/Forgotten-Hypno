@@ -1,5 +1,6 @@
 import 'dart:ui';
-import 'shader_wrapper.dart';
+
+import 'package:forgotten_hypno/shader_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -8,7 +9,8 @@ import 'package:flutter/scheduler.dart';
 class ShaderWidget extends StatefulWidget {
   /// The active FragmentShader
   final ShaderWrapper _shader;
-  const ShaderWidget(this._shader, {super.key});
+  final Widget? _image;
+  const ShaderWidget(this._shader, this._image, {super.key});
   @override
   State<ShaderWidget> createState() => _ShaderWidgetState();
 }
@@ -48,6 +50,7 @@ class _ShaderWidgetState extends State<ShaderWidget> {
       painter: _ShaderPainter(
           dt, widget._shader.shader), //extra shader because wrapper
       size: size,
+      child: widget._image,
     );
   }
 }
